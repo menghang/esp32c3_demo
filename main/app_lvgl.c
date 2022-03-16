@@ -16,37 +16,27 @@ void app_lvgl_benchmark(void *vParam)
     lv_init();
 
     lv_disp_drv_init(&disp_drv);
-    disp_drv.flush_cb = disp_driver_flush;
-    // disp_drv.drv_update_cb = st7789_update_cb;
-    // disp_drv.rotated = LV_DISP_ROT_NONE;
+    disp_drv.hor_res = 320;
+    disp_drv.ver_res = 240;
 
-    /* Initialize SPI or I2C bus used by the drivers */
-    lvgl_interface_init();
+    lvgl_interface_init(&disp_drv);
     lvgl_display_gpios_init();
 
-    /* Removed from lvgl_driver_init, that function is meant to initialize all
-     * the needed peripherals */
-    st7789_init(&disp_drv);
-
-    size_t display_buffer_size = lvgl_get_display_buffer_size();
+    size_t display_buffer_size = lvgl_get_display_buffer_size(&disp_drv);
     lv_color_t *buf1 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
-    assert(buf1 != NULL);
-
-    /* Use double buffered when not working with monochrome displays */
     lv_color_t *buf2 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
-    assert(buf2 != NULL);
 
     static lv_disp_draw_buf_t disp_buf;
-
-    uint32_t size_in_px = display_buffer_size;
-
-    /* Initialize the working buffer depending on the selected display.
-     * NOTE: buf2 == NULL when using monochrome displays. */
-    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, size_in_px);
+    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, display_buffer_size);
 
     disp_drv.draw_buf = &disp_buf;
-
+    disp_drv.flush_cb = disp_driver_flush;
+    disp_drv.drv_update_cb = st7789_update_cb;
     lv_disp_drv_register(&disp_drv);
+    disp_driver_init(&disp_drv);
+
+    lv_disp_t *disp = lv_disp_get_default();
+    lv_disp_set_rotation(disp, LV_DISP_ROT_90);
 
     /* Create and start a periodic timer interrupt to call lv_tick_inc */
     const esp_timer_create_args_t periodic_timer_args = {

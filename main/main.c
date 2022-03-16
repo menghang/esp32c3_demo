@@ -32,7 +32,7 @@ void app_main(void)
     TaskHandle_t pxTaskLvglBenchmark = NULL;
 
     // xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 1, &pxTaskSpiffsTest);
-    xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 8, NULL, 2, &pxTaskLvglBenchmark);
+    xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 2, &pxTaskLvglBenchmark);
 
     while (true)
     {
