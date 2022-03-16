@@ -3,5 +3,6 @@
 
 void app_spiffs_test(void *pvParam);
 void app_lvgl_benchmark(void *pvParam);
+void app_button_test(void *pvParam);
 
 #endif

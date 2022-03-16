@@ -28,18 +28,22 @@ void app_main(void)
              chip_info.revision,
              (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 
-    // TaskHandle_t pxTaskSpiffsTest = NULL;
+    TaskHandle_t pxTaskSpiffsTest = NULL;
     TaskHandle_t pxTaskLvglBenchmark = NULL;
+    TaskHandle_t pxTaskButtonInit = NULL;
 
-    // xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 1, &pxTaskSpiffsTest);
+    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 1, &pxTaskSpiffsTest);
     xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 2, &pxTaskLvglBenchmark);
+    xTaskCreate(app_button_test, "button_test", 1024 * 2, NULL, 3, &pxTaskButtonInit);
 
     while (true)
     {
-        // ESP_LOGI(TAG, "spiffs_test Task Stack: %d.",
-        //          uxTaskGetStackHighWaterMark(pxTaskSpiffsTest));
-        ESP_LOGI(TAG, "lvgl_benchmark Task Stack: %d.",
-                 uxTaskGetStackHighWaterMark(pxTaskLvglBenchmark));
+        //ESP_LOGI(TAG, "spiffs_test Task Stack: %d.",
+        //         uxTaskGetStackHighWaterMark(pxTaskSpiffsTest));
+        //ESP_LOGI(TAG, "lvgl_benchmark Task Stack: %d.",
+        //         uxTaskGetStackHighWaterMark(pxTaskLvglBenchmark));
+        //ESP_LOGI(TAG, "button_test Task Stack: %d.",
+        //         uxTaskGetStackHighWaterMark(pxTaskButtonInit));
 
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
