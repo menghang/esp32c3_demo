@@ -1185,6 +1185,13 @@ CONFIG_ADC_BUTTON_SAMPLE_TIMES=1
 # end of IoT Button
 
 #
+# I2C
+#
+CONFIG_I2CDEV_TIMEOUT=1000
+# CONFIG_I2CDEV_NOLOCK is not set
+# end of I2C
+
+#
 # LVGL configuration
 #
 CONFIG_LV_CONF_SKIP=y

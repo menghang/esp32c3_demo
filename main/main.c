@@ -31,10 +31,12 @@ void app_main(void)
     TaskHandle_t pxTaskSpiffsTest = NULL;
     TaskHandle_t pxTaskLvglBenchmark = NULL;
     TaskHandle_t pxTaskButtonInit = NULL;
+    TaskHandle_t pxTaskIna226TestInit = NULL;
 
-    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 1, &pxTaskSpiffsTest);
-    xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 2, &pxTaskLvglBenchmark);
-    xTaskCreate(app_button_init, "button_test", 1024 * 2, NULL, 3, &pxTaskButtonInit);
+    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
+    xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 3, &pxTaskLvglBenchmark);
+    xTaskCreate(app_button_init, "button_test", 1024 * 2, NULL, 2, &pxTaskButtonInit);
+    xTaskCreate(app_ina226_test, "ina226_test", 1024 * 4, NULL, 1, &pxTaskIna226TestInit);
 
     while (true)
     {
