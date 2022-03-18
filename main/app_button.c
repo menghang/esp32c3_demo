@@ -3,12 +3,14 @@
 #include "esp_system.h"
 #include "esp_log.h"
 #include "iot_button.h"
+#include "app_list.h"
 
 static const char *TAG = "APP_BUTTON";
 static const uint8_t gpio_num_up = 0;
 static const uint8_t gpio_num_down = 1;
 static const uint8_t gpio_num_ok = 21;
 static const uint8_t gpio_num_back = 20;
+static const uint32_t button_beep_period = 50;
 
 static void button_up_press_down_cb(void *arg);
 static void button_down_press_down_cb(void *arg);
@@ -80,19 +82,23 @@ void app_button_init(void *pvParam)
 static void button_up_press_down_cb(void *arg)
 {
     ESP_LOGI(TAG, "Button up press down.");
+    buzzer_beep(&button_beep_period);
 }
 
 static void button_down_press_down_cb(void *arg)
 {
     ESP_LOGI(TAG, "Button down press down.");
+    buzzer_beep(&button_beep_period);
 }
 
 static void button_ok_press_down_cb(void *arg)
 {
     ESP_LOGI(TAG, "Button ok press down.");
+    buzzer_beep(&button_beep_period);
 }
 
 static void button_back_press_down_cb(void *arg)
 {
     ESP_LOGI(TAG, "Button back press down.");
+    buzzer_beep(&button_beep_period);
 }
