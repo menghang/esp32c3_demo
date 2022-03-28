@@ -4,6 +4,7 @@
 #include "lvgl.h"
 #include "demos/lv_demos.h"
 #include "lvgl_helpers.h"
+#include "gui_guider.h"
 
 #define LV_TICK_PERIOD_MS 1
 
@@ -47,7 +48,10 @@ void app_lvgl_benchmark(void *vParam)
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
     /* Create the demo application */
-    lv_demo_benchmark();
+    // lv_demo_benchmark();
+
+    static lv_ui gui;
+    setup_ui(&gui);
 
     while (true)
     {
