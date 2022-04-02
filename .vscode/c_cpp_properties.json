@@ -7,11 +7,13 @@
             "cppStandard": "c++17",
             "includePath": [
                 "${config:idf.espIdfPathWin}/components/**",
+                "${config:idf.espIdfPath}/components/**",
                 "${workspaceFolder}/**"
             ],
             "browse": {
                 "path": [
                     "${config:idf.espIdfPathWin}/components",
+                    "${config:idf.espIdfPath}/components",
                     "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": false
