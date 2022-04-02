@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "gui_guider.h"
 #include "events_init.h"
-#include "custom.h"
+//#include "custom.h"
 
 
 void setup_scr_scrPowerMeter(lv_ui *ui){
