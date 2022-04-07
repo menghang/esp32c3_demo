@@ -6,10 +6,10 @@
 #include "app_list.h"
 
 static const char *TAG = "APP_BUTTON";
-static const uint8_t gpio_num_up = 0;
-static const uint8_t gpio_num_down = 1;
-static const uint8_t gpio_num_ok = 21;
-static const uint8_t gpio_num_back = 20;
+static const uint8_t gpio_num_up = 1;
+static const uint8_t gpio_num_down = 21;
+static const uint8_t gpio_num_ok = 20;
+static const uint8_t gpio_num_back = 0;
 static const uint32_t button_beep_period = 50;
 
 static void button_up_press_down_cb(void *arg);
