@@ -41,7 +41,7 @@ void app_ina226_test(void *pvParam)
                                      INA226_CONFIG_MODE_CONT_SHUNT_BUS));
 
     ESP_LOGI(TAG, "Calibrating INA226");
-    ESP_ERROR_CHECK(ina226_calibrate(&dev, 0.125, 9.8636));
+    ESP_ERROR_CHECK(ina226_calibrate(&dev, 0.125, 9.8579));
 
     float vol, cur, pwr;
 
