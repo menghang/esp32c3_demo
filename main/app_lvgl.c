@@ -10,7 +10,7 @@
 #define LV_TICK_PERIOD_MS 1
 
 static lv_disp_drv_t disp_drv;
-static lv_ui gui;
+lv_ui guider_ui;
 
 SemaphoreHandle_t xGuiSemaphore;
 
@@ -56,7 +56,7 @@ void app_lvgl_benchmark(void *vParam)
     /* Create the demo application */
     // lv_demo_benchmark();
 
-    setup_ui(&gui);
+    setup_ui(&guider_ui);
 
     while (true)
     {
@@ -110,9 +110,9 @@ void ui_power_meter_update(float vol, float cur, float pwr)
     }
     if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
     {
-        lv_label_set_text(gui.scrPowerMeter_labelVolVal, str_vol);
-        lv_label_set_text(gui.scrPowerMeter_labelCurVal, str_cur);
-        lv_label_set_text(gui.scrPowerMeter_labelPwrVal, str_pwr);
+        lv_label_set_text(guider_ui.scrPowerMeter_labelVolVal, str_vol);
+        lv_label_set_text(guider_ui.scrPowerMeter_labelCurVal, str_cur);
+        lv_label_set_text(guider_ui.scrPowerMeter_labelPwrVal, str_pwr);
         xSemaphoreGive(xGuiSemaphore);
     }
 }
