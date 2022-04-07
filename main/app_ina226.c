@@ -35,7 +35,7 @@ void app_ina226_test(void *pvParam)
     ESP_ERROR_CHECK(ina226_init(&dev));
 
     ESP_LOGI(TAG, "Configuring INA226");
-    ESP_ERROR_CHECK(ina226_configure(&dev, INA226_CONFIG_AVG_1,
+    ESP_ERROR_CHECK(ina226_configure(&dev, INA226_CONFIG_AVG_16,
                                      INA226_CONFIG_VBUSCT_1_1m,
                                      INA226_CONFIG_VSHCT_1_1m,
                                      INA226_CONFIG_MODE_CONT_SHUNT_BUS));
