@@ -83,30 +83,30 @@ void ui_power_meter_update(float vol, float cur, float pwr)
 {
     static char str_vol[5], str_cur[5], str_pwr[5];
 
-    if (vol >= 9.9995)
+    if (vol >= 9.99995)
     {
-        sprintf(str_vol, "%2.2f", vol);
+        sprintf(str_vol, "%2.3f", vol);
     }
     else
     {
-        sprintf(str_vol, "%1.3f", vol);
+        sprintf(str_vol, "%1.4f", vol);
     }
     if (cur < 0)
     {
         cur = 0 - cur;
     }
-    sprintf(str_cur, "%1.3f", cur);
-    if (pwr >= 99.995)
+    sprintf(str_cur, "%1.4f", cur);
+    if (pwr >= 99.9995)
     {
-        sprintf(str_pwr, "%3.1f", pwr);
+        sprintf(str_pwr, "%3.2f", pwr);
     }
-    else if (pwr >= 9.995)
+    else if (pwr >= 9.9995)
     {
-        sprintf(str_pwr, "%2.2f", pwr);
+        sprintf(str_pwr, "%2.3f", pwr);
     }
     else
     {
-        sprintf(str_pwr, "%1.3f", pwr);
+        sprintf(str_pwr, "%1.4f", pwr);
     }
     if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
     {

@@ -23,9 +23,9 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelVolVal
 	ui->scrPowerMeter_labelVolVal = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelVolVal, 75, 160);
-	lv_obj_set_size(ui->scrPowerMeter_labelVolVal, 120, 40);
-	lv_label_set_text(ui->scrPowerMeter_labelVolVal, "0.000");
+	lv_obj_set_pos(ui->scrPowerMeter_labelVolVal, 70, 165);
+	lv_obj_set_size(ui->scrPowerMeter_labelVolVal, 120, 32);
+	lv_label_set_text(ui->scrPowerMeter_labelVolVal, "0.0000");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelVolVal, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelVolVal, LV_TEXT_ALIGN_CENTER, 0);
 
@@ -38,7 +38,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelvolval_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelvolval_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelvolval_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_text_font(&style_scrpowermeter_labelvolval_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelvolval_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelvolval_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelvolval_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelvolval_main_main_default, 0);
@@ -48,9 +48,9 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelCurVal
 	ui->scrPowerMeter_labelCurVal = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelCurVal, 75, 210);
-	lv_obj_set_size(ui->scrPowerMeter_labelCurVal, 120, 40);
-	lv_label_set_text(ui->scrPowerMeter_labelCurVal, "0.000");
+	lv_obj_set_pos(ui->scrPowerMeter_labelCurVal, 70, 210);
+	lv_obj_set_size(ui->scrPowerMeter_labelCurVal, 120, 32);
+	lv_label_set_text(ui->scrPowerMeter_labelCurVal, "0.0000");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelCurVal, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelCurVal, LV_TEXT_ALIGN_CENTER, 0);
 
@@ -63,7 +63,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelcurval_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelcurval_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelcurval_main_main_default, lv_color_make(0xff, 0x00, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelcurval_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelcurval_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelcurval_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelcurval_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelcurval_main_main_default, 0);
@@ -73,9 +73,9 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelPwrVal
 	ui->scrPowerMeter_labelPwrVal = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelPwrVal, 75, 260);
-	lv_obj_set_size(ui->scrPowerMeter_labelPwrVal, 120, 40);
-	lv_label_set_text(ui->scrPowerMeter_labelPwrVal, "0.000");
+	lv_obj_set_pos(ui->scrPowerMeter_labelPwrVal, 70, 255);
+	lv_obj_set_size(ui->scrPowerMeter_labelPwrVal, 120, 32);
+	lv_label_set_text(ui->scrPowerMeter_labelPwrVal, "0.0000");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelPwrVal, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelPwrVal, LV_TEXT_ALIGN_CENTER, 0);
 
@@ -88,7 +88,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelpwrval_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelpwrval_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelpwrval_main_main_default, lv_color_make(0xff, 0x7f, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelpwrval_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelpwrval_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelpwrval_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelpwrval_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelpwrval_main_main_default, 0);
@@ -98,8 +98,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelVol
 	ui->scrPowerMeter_labelVol = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelVol, 15, 160);
-	lv_obj_set_size(ui->scrPowerMeter_labelVol, 60, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelVol, 30, 165);
+	lv_obj_set_size(ui->scrPowerMeter_labelVol, 40, 32);
 	lv_label_set_text(ui->scrPowerMeter_labelVol, "U:");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelVol, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelVol, LV_TEXT_ALIGN_CENTER, 0);
@@ -113,7 +113,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelvol_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelvol_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelvol_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_text_font(&style_scrpowermeter_labelvol_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelvol_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelvol_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelvol_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelvol_main_main_default, 0);
@@ -123,8 +123,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelCur
 	ui->scrPowerMeter_labelCur = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelCur, 15, 210);
-	lv_obj_set_size(ui->scrPowerMeter_labelCur, 60, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelCur, 30, 210);
+	lv_obj_set_size(ui->scrPowerMeter_labelCur, 40, 32);
 	lv_label_set_text(ui->scrPowerMeter_labelCur, "I:");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelCur, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelCur, LV_TEXT_ALIGN_CENTER, 0);
@@ -138,7 +138,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelcur_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelcur_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelcur_main_main_default, lv_color_make(0xff, 0x00, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelcur_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelcur_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelcur_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelcur_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelcur_main_main_default, 0);
@@ -148,8 +148,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelPwr
 	ui->scrPowerMeter_labelPwr = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelPwr, 15, 260);
-	lv_obj_set_size(ui->scrPowerMeter_labelPwr, 60, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelPwr, 30, 255);
+	lv_obj_set_size(ui->scrPowerMeter_labelPwr, 40, 32);
 	lv_label_set_text(ui->scrPowerMeter_labelPwr, "P:");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelPwr, LV_LABEL_LONG_WRAP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelPwr, LV_TEXT_ALIGN_CENTER, 0);
@@ -163,7 +163,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelpwr_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelpwr_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelpwr_main_main_default, lv_color_make(0xff, 0x7f, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelpwr_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelpwr_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelpwr_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelpwr_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelpwr_main_main_default, 0);
@@ -173,8 +173,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelVolUnit
 	ui->scrPowerMeter_labelVolUnit = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelVolUnit, 195, 160);
-	lv_obj_set_size(ui->scrPowerMeter_labelVolUnit, 30, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelVolUnit, 190, 165);
+	lv_obj_set_size(ui->scrPowerMeter_labelVolUnit, 20, 40);
 	lv_label_set_text(ui->scrPowerMeter_labelVolUnit, "V");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelVolUnit, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelVolUnit, LV_TEXT_ALIGN_CENTER, 0);
@@ -188,7 +188,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelvolunit_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelvolunit_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelvolunit_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_text_font(&style_scrpowermeter_labelvolunit_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelvolunit_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelvolunit_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelvolunit_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelvolunit_main_main_default, 0);
@@ -198,8 +198,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelCurUnit
 	ui->scrPowerMeter_labelCurUnit = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelCurUnit, 195, 210);
-	lv_obj_set_size(ui->scrPowerMeter_labelCurUnit, 30, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelCurUnit, 190, 210);
+	lv_obj_set_size(ui->scrPowerMeter_labelCurUnit, 20, 32);
 	lv_label_set_text(ui->scrPowerMeter_labelCurUnit, "A");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelCurUnit, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelCurUnit, LV_TEXT_ALIGN_CENTER, 0);
@@ -213,7 +213,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelcurunit_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelcurunit_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelcurunit_main_main_default, lv_color_make(0xff, 0x00, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelcurunit_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelcurunit_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelcurunit_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelcurunit_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelcurunit_main_main_default, 0);
@@ -223,8 +223,8 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_labelPwrUnit
 	ui->scrPowerMeter_labelPwrUnit = lv_label_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_labelPwrUnit, 195, 260);
-	lv_obj_set_size(ui->scrPowerMeter_labelPwrUnit, 30, 40);
+	lv_obj_set_pos(ui->scrPowerMeter_labelPwrUnit, 190, 255);
+	lv_obj_set_size(ui->scrPowerMeter_labelPwrUnit, 20, 32);
 	lv_label_set_text(ui->scrPowerMeter_labelPwrUnit, "W");
 	lv_label_set_long_mode(ui->scrPowerMeter_labelPwrUnit, LV_LABEL_LONG_CLIP);
 	lv_obj_set_style_text_align(ui->scrPowerMeter_labelPwrUnit, LV_TEXT_ALIGN_CENTER, 0);
@@ -238,7 +238,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 	lv_style_set_bg_grad_dir(&style_scrpowermeter_labelpwrunit_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrpowermeter_labelpwrunit_main_main_default, 0);
 	lv_style_set_text_color(&style_scrpowermeter_labelpwrunit_main_main_default, lv_color_make(0xff, 0x7f, 0x00));
-	lv_style_set_text_font(&style_scrpowermeter_labelpwrunit_main_main_default, &lv_font_FiraCode_Retina_40);
+	lv_style_set_text_font(&style_scrpowermeter_labelpwrunit_main_main_default, &lv_font_FiraCode_Retina_32);
 	lv_style_set_text_letter_space(&style_scrpowermeter_labelpwrunit_main_main_default, 0);
 	lv_style_set_pad_left(&style_scrpowermeter_labelpwrunit_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrpowermeter_labelpwrunit_main_main_default, 0);
@@ -248,7 +248,7 @@ void setup_scr_scrPowerMeter(lv_ui *ui){
 
 	//Write codes scrPowerMeter_imgLogo
 	ui->scrPowerMeter_imgLogo = lv_img_create(ui->scrPowerMeter);
-	lv_obj_set_pos(ui->scrPowerMeter_imgLogo, 0, 30);
+	lv_obj_set_pos(ui->scrPowerMeter_imgLogo, 0, 35);
 	lv_obj_set_size(ui->scrPowerMeter_imgLogo, 240, 112);
 
 	//Write style state: LV_STATE_DEFAULT for style_scrpowermeter_imglogo_main_main_default
