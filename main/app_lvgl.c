@@ -1,5 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 #include "esp_system.h"
 #include "lvgl.h"
 #include "demos/lv_demos.h"
@@ -9,11 +10,16 @@
 #define LV_TICK_PERIOD_MS 1
 
 static lv_disp_drv_t disp_drv;
+static lv_ui gui;
+
+SemaphoreHandle_t xGuiSemaphore;
 
 static void lv_tick_task(void *arg);
 
 void app_lvgl_benchmark(void *vParam)
 {
+    xGuiSemaphore = xSemaphoreCreateMutex();
+
     lv_init();
 
     lv_disp_drv_init(&disp_drv);
@@ -50,12 +56,15 @@ void app_lvgl_benchmark(void *vParam)
     /* Create the demo application */
     // lv_demo_benchmark();
 
-    static lv_ui gui;
     setup_ui(&gui);
 
     while (true)
     {
-        lv_task_handler();
+        if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+        {
+            lv_task_handler();
+            xSemaphoreGive(xGuiSemaphore);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
@@ -68,4 +77,42 @@ void app_lvgl_benchmark(void *vParam)
 static void lv_tick_task(void *arg)
 {
     lv_tick_inc(LV_TICK_PERIOD_MS);
+}
+
+void ui_power_meter_update(float vol, float cur, float pwr)
+{
+    static char str_vol[5], str_cur[5], str_pwr[5];
+
+    if (vol >= 9.9995)
+    {
+        sprintf(str_vol, "%2.2f", vol);
+    }
+    else
+    {
+        sprintf(str_vol, "%1.3f", vol);
+    }
+    if (cur < 0)
+    {
+        cur = 0 - cur;
+    }
+    sprintf(str_cur, "%1.3f", cur);
+    if (pwr >= 99.995)
+    {
+        sprintf(str_pwr, "%3.1f", pwr);
+    }
+    else if (pwr >= 9.995)
+    {
+        sprintf(str_pwr, "%2.2f", pwr);
+    }
+    else
+    {
+        sprintf(str_pwr, "%1.3f", pwr);
+    }
+    if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+    {
+        lv_label_set_text(gui.scrPowerMeter_labelVolVal, str_vol);
+        lv_label_set_text(gui.scrPowerMeter_labelCurVal, str_cur);
+        lv_label_set_text(gui.scrPowerMeter_labelPwrVal, str_pwr);
+        xSemaphoreGive(xGuiSemaphore);
+    }
 }

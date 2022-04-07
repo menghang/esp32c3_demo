@@ -34,8 +34,8 @@ void app_main(void)
     TaskHandle_t pxTaskIna226Test = NULL;
     TaskHandle_t pxTaskBuzzerInit = NULL;
 
-    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
     xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 3, &pxTaskLvglBenchmark);
+    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
     xTaskCreate(app_buzzer_init, "buzzer_init", 1024 * 4, NULL, 1, &pxTaskBuzzerInit);
     xTaskCreate(app_button_init, "button_init", 1024 * 4, NULL, 1, &pxTaskButtonInit);
     xTaskCreate(app_ina226_test, "ina226_test", 1024 * 4, NULL, 1, &pxTaskIna226Test);
