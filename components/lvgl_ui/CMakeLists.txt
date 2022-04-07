@@ -5,7 +5,6 @@ idf_component_register(
     ${SOURCES}
     INCLUDE_DIRS
     .
-    ./guider_customer_fonts
     ./guider_fonts
     REQUIRES
     lvgl)
