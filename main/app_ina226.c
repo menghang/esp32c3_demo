@@ -21,12 +21,12 @@ static float buf_cur[MEAS_BUF_SIZE];
 static float buf_pwr[MEAS_BUF_SIZE];
 
 static float calc_avg_val(float *buf, uint8_t length);
+static ina226_t dev;
 
-void app_ina226_test(void *pvParam)
+void dev_ina226_init(void)
 {
     ESP_ERROR_CHECK(i2cdev_init());
 
-    ina226_t dev;
     memset(&dev, 0, sizeof(ina226_t));
 
     ESP_ERROR_CHECK(ina226_init_desc(&dev, I2C_INA226_ADDR, I2C_INA226_PORT,
@@ -42,7 +42,10 @@ void app_ina226_test(void *pvParam)
 
     ESP_LOGI(TAG, "Calibrating INA226");
     ESP_ERROR_CHECK(ina226_calibrate(&dev, 0.125, 9.8579));
+}
 
+void app_ina226_meas(void *pvParam)
+{
     float vol, cur, pwr;
 
     ESP_LOGI(TAG, "Starting the loop");

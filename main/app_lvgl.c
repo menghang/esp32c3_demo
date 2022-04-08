@@ -16,10 +16,8 @@ SemaphoreHandle_t xGuiSemaphore;
 
 static void lv_tick_task(void *arg);
 
-void app_lvgl_benchmark(void *vParam)
+void dev_lvgl_init(void)
 {
-    xGuiSemaphore = xSemaphoreCreateMutex();
-
     lv_init();
 
     lv_disp_drv_init(&disp_drv);
@@ -52,9 +50,11 @@ void app_lvgl_benchmark(void *vParam)
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
+}
 
-    /* Create the demo application */
-    // lv_demo_benchmark();
+void app_lvgl(void *vParam)
+{
+    xGuiSemaphore = xSemaphoreCreateMutex();
 
     setup_ui(&guider_ui);
 
@@ -68,8 +68,6 @@ void app_lvgl_benchmark(void *vParam)
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-    free(buf1);
-    free(buf2);
 
     vTaskDelete(NULL);
 }

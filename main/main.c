@@ -28,17 +28,19 @@ void app_main(void)
              chip_info.revision,
              (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 
-    TaskHandle_t pxTaskSpiffsTest = NULL;
-    TaskHandle_t pxTaskLvglBenchmark = NULL;
-    TaskHandle_t pxTaskButtonInit = NULL;
-    TaskHandle_t pxTaskIna226Test = NULL;
-    TaskHandle_t pxTaskBuzzerInit = NULL;
+    dev_lvgl_init();
+    dev_ina226_init();
+    dev_spiffs_init();
+    dev_buzzer_init();
+    dev_button_init();
 
-    xTaskCreate(app_lvgl_benchmark, "lvgl_benchmark", 1024 * 4, NULL, 3, &pxTaskLvglBenchmark);
-    xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
-    xTaskCreate(app_buzzer_init, "buzzer_init", 1024 * 4, NULL, 1, &pxTaskBuzzerInit);
-    xTaskCreate(app_button_init, "button_init", 1024 * 4, NULL, 1, &pxTaskButtonInit);
-    xTaskCreate(app_ina226_test, "ina226_test", 1024 * 4, NULL, 1, &pxTaskIna226Test);
+    //TaskHandle_t pxTaskSpiffsTest = NULL;
+    TaskHandle_t pxTaskLvgl = NULL;
+    TaskHandle_t pxTaskIna226Meas = NULL;
+
+    xTaskCreate(app_lvgl, "lvgl", 1024 * 4, NULL, 3, &pxTaskLvgl);
+    //xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
+    xTaskCreate(app_ina226_meas, "ina226_meas", 1024 * 4, NULL, 1, &pxTaskIna226Meas);
 
     while (true)
     {

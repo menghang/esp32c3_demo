@@ -17,7 +17,7 @@ static const char *TAG = "APP_BUZER";
 
 static void app_buzzer_beep(void *pvParam);
 
-void app_buzzer_init(void *pvParam)
+void dev_buzzer_init(void)
 {
     ledc_timer_config_t buzzer_timer = {
         .speed_mode = BUZZER_MODE,
@@ -39,13 +39,11 @@ void app_buzzer_init(void *pvParam)
     ESP_ERROR_CHECK(ledc_timer_pause(BUZZER_MODE, BUZZER_TIMER));
 
     ESP_LOGI(TAG, "Buzzer init is done.");
-
-    vTaskDelete(NULL);
 }
 
 void buzzer_beep(const uint32_t *period)
 {
-    xTaskCreate(app_buzzer_beep, "app_buzzer_beep", 1024 * 4, (void * const)period, 1, NULL);
+    xTaskCreate(app_buzzer_beep, "app_buzzer_beep", 1024 * 4, (void *const)period, 1, NULL);
 }
 
 static void app_buzzer_beep(void *pvParam)

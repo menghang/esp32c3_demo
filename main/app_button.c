@@ -17,7 +17,7 @@ static void button_down_press_down_cb(void *arg);
 static void button_ok_press_down_cb(void *arg);
 static void button_back_press_down_cb(void *arg);
 
-void app_button_init(void *pvParam)
+void dev_button_init(void)
 {
     button_config_t btn_up_cfg = {
         .type = BUTTON_TYPE_GPIO,
@@ -75,8 +75,6 @@ void app_button_init(void *pvParam)
     }
     iot_button_register_cb(btn_back_handler, BUTTON_PRESS_DOWN, button_back_press_down_cb);
     ESP_LOGI(TAG, "Button init is done.");
-
-    vTaskDelete(NULL);
 }
 
 static void button_up_press_down_cb(void *arg)

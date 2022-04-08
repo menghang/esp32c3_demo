@@ -10,7 +10,7 @@
 
 static const char *TAG = "APP_SPIFFS";
 
-void app_spiffs_test(void *pvParam)
+void dev_spiffs_init(void)
 {
     ESP_LOGI(TAG, "Initializing SPIFFS");
 
@@ -51,7 +51,10 @@ void app_spiffs_test(void *pvParam)
     {
         ESP_LOGI(TAG, "Partition size: total: %d, used: %d", total, used);
     }
+}
 
+void app_spiffs_test(void *pvParam)
+{
     // Use POSIX and C standard library functions to work with files.
     // First create a file.
     ESP_LOGI(TAG, "Opening file");
@@ -114,8 +117,8 @@ void app_spiffs_test(void *pvParam)
     // }
 
     // All done, unmount partition and disable SPIFFS
-    esp_vfs_spiffs_unregister(conf.partition_label);
-    ESP_LOGI(TAG, "SPIFFS unmounted");
+    // esp_vfs_spiffs_unregister(conf.partition_label);
+    // ESP_LOGI(TAG, "SPIFFS unmounted");
 
     vTaskDelete(NULL);
 }
