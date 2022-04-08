@@ -234,7 +234,7 @@ esp_err_t ina226_calibrate(ina226_t *dev, float i_lsb, float r_shunt)
     uint16_t cal = (uint16_t)((5120) / (dev->i_lsb * r_shunt));
     float i_expected_max = dev->i_lsb * 32768 / 1000;
 
-    ESP_LOGI(TAG, "Max current: %.04f A, shunt resister: %.01f mOhm, cali regisiter: 0x%04x",
+    ESP_LOGI(TAG, "Max current: %.4f A, shunt resister: %.4f mOhm, cali regisiter: 0x%04x",
              i_expected_max, r_shunt, cal);
 
     return write_reg_16(dev, REG_CALIBRATION, cal);
