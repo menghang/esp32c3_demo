@@ -79,7 +79,7 @@ static void lv_tick_task(void *arg)
 
 void ui_power_meter_update(float vol, float cur, float pwr)
 {
-    static char str_vol[5], str_cur[5], str_pwr[5];
+    static char str_vol[16], str_cur[16], str_pwr[16];
 
     if (vol >= 9.99995)
     {
