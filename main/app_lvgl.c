@@ -98,7 +98,7 @@ void ui_power_meter_update(float vol, float cur, float pwr)
     {
         sprintf(str_pwr, "%3.2f", pwr);
     }
-    else if (pwr >= 9.9995)
+    else if (pwr >= 9.99995)
     {
         sprintf(str_pwr, "%2.3f", pwr);
     }
