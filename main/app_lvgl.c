@@ -12,6 +12,14 @@
 static const char *TAG = "APP_LVGL";
 
 #define LV_TICK_PERIOD_MS 1
+typedef enum
+{
+    SCR_WELCOME,
+    SCR_MODE_SELECT,
+    SCR_WIFI,
+    SCR_PROG,
+    SCR_POWER_METER
+} scr_t;
 
 lv_ui guider_ui;
 scr_t current_screen;
@@ -20,8 +28,9 @@ static lv_disp_drv_t disp_drv;
 static SemaphoreHandle_t xGuiSemaphore;
 
 static void lv_tick_task(void *arg);
-static void scr_power_meter_key_event_handler(key_event_t event);
 static void scr_welcome_key_event_handler(key_event_t event);
+static void scr_mode_select_key_event_handler(key_event_t event);
+static void scr_power_meter_key_event_handler(key_event_t event);
 
 esp_err_t dev_lvgl_init(void)
 {
@@ -62,10 +71,11 @@ esp_err_t dev_lvgl_init(void)
 
     ESP_LOGI(TAG, "lvgl init is done.");
 
-    setup_scr_scrPowerMeter(&guider_ui);
     setup_scr_scrWelcome(&guider_ui);
-    setup_scr_scrProg(&guider_ui);
     setup_scr_scrModeSelect(&guider_ui);
+    setup_scr_scrWifi(&guider_ui);
+    setup_scr_scrProg(&guider_ui);
+    setup_scr_scrPowerMeter(&guider_ui);
     lv_scr_load(guider_ui.scrWelcome);
     current_screen = SCR_WELCOME;
 
@@ -146,13 +156,15 @@ void app_key_event_handler(void *vParam)
             key_event = KEY_NO_EVENT;
             switch (current_screen)
             {
-            case SCR_POWER_METER:
-                scr_power_meter_key_event_handler(event);
-                break;
             case SCR_WELCOME:
                 scr_welcome_key_event_handler(event);
                 break;
             case SCR_MODE_SELECT:
+                scr_mode_select_key_event_handler(event);
+                break;
+            case SCR_POWER_METER:
+                scr_power_meter_key_event_handler(event);
+                break;
             case SCR_PROG:
             default:
                 break;
@@ -164,6 +176,16 @@ void app_key_event_handler(void *vParam)
 }
 
 static void scr_welcome_key_event_handler(key_event_t event)
+{
+    if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+    {
+        lv_scr_load(guider_ui.scrModeSelect);
+        xSemaphoreGive(xGuiSemaphore);
+    }
+    current_screen = SCR_MODE_SELECT;
+}
+
+static void scr_mode_select_key_event_handler(key_event_t event)
 {
     if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
     {
@@ -181,9 +203,9 @@ static void scr_power_meter_key_event_handler(key_event_t event)
         ESP_ERROR_CHECK(terminate_ina226_service());
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
         {
-            lv_scr_load(guider_ui.scrWelcome);
+            lv_scr_load(guider_ui.scrModeSelect);
             xSemaphoreGive(xGuiSemaphore);
         }
-        current_screen = SCR_WELCOME;
+        current_screen = SCR_MODE_SELECT;
     }
 }

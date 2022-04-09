@@ -123,7 +123,7 @@ void setup_scr_scrProg(lv_ui *ui){
 	lv_style_set_bg_grad_color(&style_scrprog_labelmtp_main_main_default, lv_color_make(0x21, 0x95, 0xf6));
 	lv_style_set_bg_grad_dir(&style_scrprog_labelmtp_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_labelmtp_main_main_default, 0);
-	lv_style_set_text_color(&style_scrprog_labelmtp_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
+	lv_style_set_text_color(&style_scrprog_labelmtp_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_text_font(&style_scrprog_labelmtp_main_main_default, &lv_font_FiraCode_Retina_14);
 	lv_style_set_text_letter_space(&style_scrprog_labelmtp_main_main_default, 2);
 	lv_style_set_pad_left(&style_scrprog_labelmtp_main_main_default, 0);
@@ -148,7 +148,7 @@ void setup_scr_scrProg(lv_ui *ui){
 	lv_style_set_bg_grad_color(&style_scrprog_labelcfg_main_main_default, lv_color_make(0x21, 0x95, 0xf6));
 	lv_style_set_bg_grad_dir(&style_scrprog_labelcfg_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_labelcfg_main_main_default, 0);
-	lv_style_set_text_color(&style_scrprog_labelcfg_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
+	lv_style_set_text_color(&style_scrprog_labelcfg_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_text_font(&style_scrprog_labelcfg_main_main_default, &lv_font_FiraCode_Retina_14);
 	lv_style_set_text_letter_space(&style_scrprog_labelcfg_main_main_default, 2);
 	lv_style_set_pad_left(&style_scrprog_labelcfg_main_main_default, 0);
@@ -160,25 +160,25 @@ void setup_scr_scrProg(lv_ui *ui){
 	//Write codes scrProg_btnStart
 	ui->scrProg_btnStart = lv_btn_create(ui->scrProg);
 	lv_obj_set_pos(ui->scrProg_btnStart, 10, 90);
-	lv_obj_set_size(ui->scrProg_btnStart, 220, 40);
+	lv_obj_set_size(ui->scrProg_btnStart, 220, 30);
 
 	//Write style state: LV_STATE_DEFAULT for style_scrprog_btnstart_main_main_default
 	static lv_style_t style_scrprog_btnstart_main_main_default;
 	lv_style_reset(&style_scrprog_btnstart_main_main_default);
-	lv_style_set_radius(&style_scrprog_btnstart_main_main_default, 20);
+	lv_style_set_radius(&style_scrprog_btnstart_main_main_default, 15);
 	lv_style_set_bg_color(&style_scrprog_btnstart_main_main_default, lv_color_make(0x00, 0x00, 0x00));
 	lv_style_set_bg_grad_color(&style_scrprog_btnstart_main_main_default, lv_color_make(0x00, 0x00, 0x00));
 	lv_style_set_bg_grad_dir(&style_scrprog_btnstart_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_btnstart_main_main_default, 255);
 	lv_style_set_shadow_color(&style_scrprog_btnstart_main_main_default, lv_color_make(0x21, 0x95, 0xf6));
 	lv_style_set_shadow_opa(&style_scrprog_btnstart_main_main_default, 0);
-	lv_style_set_border_color(&style_scrprog_btnstart_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_border_width(&style_scrprog_btnstart_main_main_default, 2);
+	lv_style_set_border_color(&style_scrprog_btnstart_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_border_width(&style_scrprog_btnstart_main_main_default, 1);
 	lv_style_set_border_opa(&style_scrprog_btnstart_main_main_default, 255);
 	lv_obj_add_style(ui->scrProg_btnStart, &style_scrprog_btnstart_main_main_default, LV_PART_MAIN|LV_STATE_DEFAULT);
 	ui->scrProg_btnStart_label = lv_label_create(ui->scrProg_btnStart);
 	lv_label_set_text(ui->scrProg_btnStart_label, "START");
-	lv_obj_set_style_text_color(ui->scrProg_btnStart_label, lv_color_make(0x00, 0x7f, 0xff), LV_STATE_DEFAULT);
+	lv_obj_set_style_text_color(ui->scrProg_btnStart_label, lv_color_make(0xff, 0xff, 0xff), LV_STATE_DEFAULT);
 	lv_obj_set_style_text_font(ui->scrProg_btnStart_label, &lv_font_FiraCode_Retina_14, LV_STATE_DEFAULT);
 	lv_obj_set_style_pad_all(ui->scrProg_btnStart, 0, LV_STATE_DEFAULT);
 	lv_obj_align(ui->scrProg_btnStart_label, LV_ALIGN_CENTER, 0, 0);
@@ -198,7 +198,7 @@ void setup_scr_scrProg(lv_ui *ui){
 	lv_style_set_bg_grad_color(&style_scrprog_spangrouplog_main_main_default, lv_color_make(0x21, 0x95, 0xf6));
 	lv_style_set_bg_grad_dir(&style_scrprog_spangrouplog_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_spangrouplog_main_main_default, 0);
-	lv_style_set_border_color(&style_scrprog_spangrouplog_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
+	lv_style_set_border_color(&style_scrprog_spangrouplog_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_border_width(&style_scrprog_spangrouplog_main_main_default, 1);
 	lv_style_set_pad_left(&style_scrprog_spangrouplog_main_main_default, 2);
 	lv_style_set_pad_right(&style_scrprog_spangrouplog_main_main_default, 2);
@@ -211,8 +211,8 @@ void setup_scr_scrProg(lv_ui *ui){
 
 	//create a new span
 	scrProg_spangroupLog_span = lv_spangroup_new_span(ui->scrProg_spangroupLog);
-	lv_span_set_text(scrProg_spangroupLog_span, "Log");
-	lv_style_set_text_color(&scrProg_spangroupLog_span->style, lv_color_make(0x00, 0x7f, 0xff));
+	lv_span_set_text(scrProg_spangroupLog_span, "LOG");
+	lv_style_set_text_color(&scrProg_spangroupLog_span->style, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_text_decor(&scrProg_spangroupLog_span->style, LV_TEXT_DECOR_NONE);
 	lv_style_set_text_font(&scrProg_spangroupLog_span->style, &lv_font_FiraCode_Retina_14);
 
@@ -224,11 +224,11 @@ void setup_scr_scrProg(lv_ui *ui){
 	//Write style state: LV_STATE_DEFAULT for style_scrprog_barprogress_main_main_default
 	static lv_style_t style_scrprog_barprogress_main_main_default;
 	lv_style_reset(&style_scrprog_barprogress_main_main_default);
-	lv_style_set_radius(&style_scrprog_barprogress_main_main_default, 10);
-	lv_style_set_bg_color(&style_scrprog_barprogress_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_bg_grad_color(&style_scrprog_barprogress_main_main_default, lv_color_make(0x00, 0x5f, 0xbf));
+	lv_style_set_radius(&style_scrprog_barprogress_main_main_default, 15);
+	lv_style_set_bg_color(&style_scrprog_barprogress_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_color(&style_scrprog_barprogress_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_bg_grad_dir(&style_scrprog_barprogress_main_main_default, LV_GRAD_DIR_VER);
-	lv_style_set_bg_opa(&style_scrprog_barprogress_main_main_default, 76);
+	lv_style_set_bg_opa(&style_scrprog_barprogress_main_main_default, 82);
 	lv_style_set_pad_left(&style_scrprog_barprogress_main_main_default, 0);
 	lv_style_set_pad_right(&style_scrprog_barprogress_main_main_default, 0);
 	lv_style_set_pad_top(&style_scrprog_barprogress_main_main_default, 0);
@@ -263,8 +263,8 @@ void setup_scr_scrProg(lv_ui *ui){
 	lv_style_set_bg_grad_color(&style_scrprog_ddlistcfgfile_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_bg_grad_dir(&style_scrprog_ddlistcfgfile_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_ddlistcfgfile_main_main_default, 255);
-	lv_style_set_border_color(&style_scrprog_ddlistcfgfile_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_border_width(&style_scrprog_ddlistcfgfile_main_main_default, 1);
+	lv_style_set_border_color(&style_scrprog_ddlistcfgfile_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_border_width(&style_scrprog_ddlistcfgfile_main_main_default, 2);
 	lv_style_set_text_color(&style_scrprog_ddlistcfgfile_main_main_default, lv_color_make(0x00, 0x00, 0x00));
 	lv_style_set_text_font(&style_scrprog_ddlistcfgfile_main_main_default, &lv_font_FiraCode_Retina_14);
 	lv_style_set_text_line_space(&style_scrprog_ddlistcfgfile_main_main_default, 20);
@@ -285,8 +285,8 @@ void setup_scr_scrProg(lv_ui *ui){
 	lv_style_set_bg_grad_color(&style_scrprog_ddlistmtpfile_main_main_default, lv_color_make(0xff, 0xff, 0xff));
 	lv_style_set_bg_grad_dir(&style_scrprog_ddlistmtpfile_main_main_default, LV_GRAD_DIR_VER);
 	lv_style_set_bg_opa(&style_scrprog_ddlistmtpfile_main_main_default, 255);
-	lv_style_set_border_color(&style_scrprog_ddlistmtpfile_main_main_default, lv_color_make(0x00, 0x7f, 0xff));
-	lv_style_set_border_width(&style_scrprog_ddlistmtpfile_main_main_default, 1);
+	lv_style_set_border_color(&style_scrprog_ddlistmtpfile_main_main_default, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_border_width(&style_scrprog_ddlistmtpfile_main_main_default, 2);
 	lv_style_set_text_color(&style_scrprog_ddlistmtpfile_main_main_default, lv_color_make(0x00, 0x00, 0x00));
 	lv_style_set_text_font(&style_scrprog_ddlistmtpfile_main_main_default, &lv_font_FiraCode_Retina_14);
 	lv_style_set_text_line_space(&style_scrprog_ddlistmtpfile_main_main_default, 20);

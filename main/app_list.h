@@ -26,14 +26,4 @@ typedef enum
 
 extern key_event_t key_event;
 
-typedef enum
-{
-    SCR_WELCOME,
-    SCR_PROG,
-    SCR_MODE_SELECT,
-    SCR_POWER_METER
-} scr_t;
-
-extern scr_t cur_screen;
-
 #endif

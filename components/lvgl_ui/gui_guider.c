@@ -9,6 +9,6 @@
 
 
 void setup_ui(lv_ui *ui){
-	setup_scr_scrPowerMeter(ui);
-	lv_scr_load(ui->scrPowerMeter);
+	setup_scr_scrWelcome(ui);
+	lv_scr_load(ui->scrWelcome);
 }
