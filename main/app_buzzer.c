@@ -17,7 +17,7 @@ static const char *TAG = "APP_BUZER";
 
 static void app_buzzer_beep(void *pvParam);
 
-void dev_buzzer_init(void)
+esp_err_t dev_buzzer_init(void)
 {
     ledc_timer_config_t buzzer_timer = {
         .speed_mode = BUZZER_MODE,
@@ -39,6 +39,8 @@ void dev_buzzer_init(void)
     ESP_ERROR_CHECK(ledc_timer_pause(BUZZER_MODE, BUZZER_TIMER));
 
     ESP_LOGI(TAG, "Buzzer init is done.");
+
+    return ESP_OK;
 }
 
 void buzzer_beep(const uint32_t *period)

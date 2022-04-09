@@ -12,6 +12,7 @@
 #include "esp_system.h"
 #include "esp_log.h"
 #include "app_list.h"
+#include "i2cdev.h"
 
 static const char *TAG = "MAIN";
 
@@ -28,29 +29,17 @@ void app_main(void)
              chip_info.revision,
              (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 
-    dev_lvgl_init();
-    dev_ina226_init();
-    dev_spiffs_init();
-    dev_buzzer_init();
-    dev_button_init();
+    ESP_ERROR_CHECK(dev_lvgl_init());
+    ESP_ERROR_CHECK(dev_spiffs_init());
+    ESP_ERROR_CHECK(dev_buzzer_init());
+    ESP_ERROR_CHECK(dev_key_init());
+    ESP_ERROR_CHECK(i2cdev_init());
 
-    //TaskHandle_t pxTaskSpiffsTest = NULL;
-    TaskHandle_t pxTaskLvgl = NULL;
-    TaskHandle_t pxTaskIna226Meas = NULL;
-
-    xTaskCreate(app_lvgl, "lvgl", 1024 * 4, NULL, 3, &pxTaskLvgl);
-    //xTaskCreate(app_spiffs_test, "spiffs_test", 1024 * 4, NULL, 2, &pxTaskSpiffsTest);
-    xTaskCreate(app_ina226_meas, "ina226_meas", 1024 * 4, NULL, 1, &pxTaskIna226Meas);
+    xTaskCreate(app_lvgl, "lvgl", 1024 * 4, NULL, 2, NULL);
+    xTaskCreate(app_key_event_handler, "key_event_handler", 1024 * 4, NULL, 3, NULL);
 
     while (true)
     {
-        // ESP_LOGI(TAG, "spiffs_test Task Stack: %d.",
-        //          uxTaskGetStackHighWaterMark(pxTaskSpiffsTest));
-        // ESP_LOGI(TAG, "lvgl_benchmark Task Stack: %d.",
-        //          uxTaskGetStackHighWaterMark(pxTaskLvglBenchmark));
-        // ESP_LOGI(TAG, "button_test Task Stack: %d.",
-        //          uxTaskGetStackHighWaterMark(pxTaskButtonInit));
-
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }

@@ -10,7 +10,7 @@
 
 static const char *TAG = "APP_SPIFFS";
 
-void dev_spiffs_init(void)
+esp_err_t dev_spiffs_init(void)
 {
     ESP_LOGI(TAG, "Initializing SPIFFS");
 
@@ -38,7 +38,7 @@ void dev_spiffs_init(void)
         {
             ESP_LOGE(TAG, "Failed to initialize SPIFFS (%s)", esp_err_to_name(ret));
         }
-        return;
+        return ESP_FAIL;
     }
 
     size_t total = 0, used = 0;
@@ -51,6 +51,7 @@ void dev_spiffs_init(void)
     {
         ESP_LOGI(TAG, "Partition size: total: %d, used: %d", total, used);
     }
+    return ret;
 }
 
 void app_spiffs_test(void *pvParam)

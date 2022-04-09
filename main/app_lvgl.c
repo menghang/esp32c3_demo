@@ -2,22 +2,31 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "esp_system.h"
+#include "esp_log.h"
 #include "lvgl.h"
 #include "demos/lv_demos.h"
 #include "lvgl_helpers.h"
 #include "gui_guider.h"
+#include "app_list.h"
+
+static const char *TAG = "APP_LVGL";
 
 #define LV_TICK_PERIOD_MS 1
 
-static lv_disp_drv_t disp_drv;
 lv_ui guider_ui;
+scr_t current_screen;
 
-SemaphoreHandle_t xGuiSemaphore;
+static lv_disp_drv_t disp_drv;
+static SemaphoreHandle_t xGuiSemaphore;
 
 static void lv_tick_task(void *arg);
+static void scr_power_meter_key_event_handler(key_event_t event);
+static void scr_welcome_key_event_handler(key_event_t event);
 
-void dev_lvgl_init(void)
+esp_err_t dev_lvgl_init(void)
 {
+    xGuiSemaphore = xSemaphoreCreateMutex();
+
     lv_init();
 
     lv_disp_drv_init(&disp_drv);
@@ -50,14 +59,21 @@ void dev_lvgl_init(void)
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
+
+    ESP_LOGI(TAG, "lvgl init is done.");
+
+    setup_scr_scrPowerMeter(&guider_ui);
+    setup_scr_scrWelcome(&guider_ui);
+    setup_scr_scrProg(&guider_ui);
+    setup_scr_scrModeSelect(&guider_ui);
+    lv_scr_load(guider_ui.scrWelcome);
+    current_screen = SCR_WELCOME;
+
+    return ESP_OK;
 }
 
 void app_lvgl(void *vParam)
 {
-    xGuiSemaphore = xSemaphoreCreateMutex();
-
-    setup_ui(&guider_ui);
-
     while (true)
     {
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
@@ -112,5 +128,62 @@ void ui_power_meter_update(float vol, float cur, float pwr)
         lv_label_set_text(guider_ui.scrPowerMeter_labelCurVal, str_cur);
         lv_label_set_text(guider_ui.scrPowerMeter_labelPwrVal, str_pwr);
         xSemaphoreGive(xGuiSemaphore);
+    }
+}
+
+void app_key_event_handler(void *vParam)
+{
+    key_event_t event;
+    while (true)
+    {
+        if (KEY_NO_EVENT == key_event)
+        {
+            vTaskDelay(pdMS_TO_TICKS(50));
+        }
+        else
+        {
+            event = key_event;
+            key_event = KEY_NO_EVENT;
+            switch (current_screen)
+            {
+            case SCR_POWER_METER:
+                scr_power_meter_key_event_handler(event);
+                break;
+            case SCR_WELCOME:
+                scr_welcome_key_event_handler(event);
+                break;
+            case SCR_MODE_SELECT:
+            case SCR_PROG:
+            default:
+                break;
+            }
+        }
+    }
+
+    vTaskDelete(NULL);
+}
+
+static void scr_welcome_key_event_handler(key_event_t event)
+{
+    if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+    {
+        lv_scr_load(guider_ui.scrPowerMeter);
+        xSemaphoreGive(xGuiSemaphore);
+    }
+    current_screen = SCR_POWER_METER;
+    ESP_ERROR_CHECK(start_ina226_service());
+}
+
+static void scr_power_meter_key_event_handler(key_event_t event)
+{
+    if (KEY_BACK_EVENT == event)
+    {
+        ESP_ERROR_CHECK(terminate_ina226_service());
+        if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+        {
+            lv_scr_load(guider_ui.scrWelcome);
+            xSemaphoreGive(xGuiSemaphore);
+        }
+        current_screen = SCR_WELCOME;
     }
 }
