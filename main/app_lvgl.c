@@ -95,14 +95,18 @@ void app_lvgl(void *vParam)
 {
     while (true)
     {
+        // Try to take GUI mutex
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
         {
             lv_task_handler();
+            // Give GUI mutex
             xSemaphoreGive(xGuiSemaphore);
         }
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-    // Never reach here
+    // Should never reach here
+    free(disp_drv.draw_buf->buf1);
+    free(disp_drv.draw_buf->buf2);
     vTaskDelete(NULL);
 }
 
