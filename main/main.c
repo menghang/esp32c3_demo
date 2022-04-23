@@ -36,7 +36,6 @@ void app_main(void)
     ESP_ERROR_CHECK(i2cdev_init());
 
     xTaskCreate(app_lvgl, "lvgl", 1024 * 4, NULL, 2, NULL);
-    xTaskCreate(app_key_event_handler, "key_event_handler", 1024 * 4, NULL, 3, NULL);
 
     while (true)
     {

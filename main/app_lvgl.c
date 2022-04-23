@@ -22,15 +22,15 @@ typedef enum
 } scr_t;
 
 lv_ui guider_ui;
-scr_t current_screen;
+lv_key_t key_event = 0;
 
 static lv_disp_drv_t disp_drv;
 static SemaphoreHandle_t xGuiSemaphore;
+static scr_t current_screen;
+static lv_indev_t *indev_key;
 
 static void lv_tick_task(void *arg);
-static void scr_welcome_key_event_handler(key_event_t event);
-static void scr_mode_select_key_event_handler(key_event_t event);
-static void scr_power_meter_key_event_handler(key_event_t event);
+static void key_read_cb(lv_indev_drv_t *indev_drv, lv_indev_data_t *data);
 
 esp_err_t dev_lvgl_init(void)
 {
@@ -62,6 +62,11 @@ esp_err_t dev_lvgl_init(void)
     lv_disp_set_rotation(disp, LV_DISP_ROT_90);
 
     /* Create and start a periodic timer interrupt to call lv_tick_inc */
+    static lv_indev_drv_t indev_drv;
+    lv_indev_drv_init(&indev_drv);
+    indev_drv.type = LV_INDEV_TYPE_KEYPAD;
+    indev_drv.read_cb = key_read_cb;
+    indev_key = lv_indev_drv_register(&indev_drv);
     const esp_timer_create_args_t periodic_timer_args = {
         .callback = &lv_tick_task,
         .name = "lv_tick-task"};
@@ -141,71 +146,17 @@ void ui_power_meter_update(float vol, float cur, float pwr)
     }
 }
 
-void app_key_event_handler(void *vParam)
+static void key_read_cb(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
 {
-    key_event_t event;
-    while (true)
+    if (key_event != 0)
     {
-        if (KEY_NO_EVENT == key_event)
-        {
-            vTaskDelay(pdMS_TO_TICKS(50));
-        }
-        else
-        {
-            event = key_event;
-            key_event = KEY_NO_EVENT;
-            switch (current_screen)
-            {
-            case SCR_WELCOME:
-                scr_welcome_key_event_handler(event);
-                break;
-            case SCR_MODE_SELECT:
-                scr_mode_select_key_event_handler(event);
-                break;
-            case SCR_POWER_METER:
-                scr_power_meter_key_event_handler(event);
-                break;
-            case SCR_PROG:
-            default:
-                break;
-            }
-        }
+        ESP_LOGI(TAG, "Key 0x%02X is pressed", key_event);
+        data->state = LV_INDEV_STATE_PRESSED;
+        data->key = key_event;
+        key_event = 0;
     }
-
-    vTaskDelete(NULL);
-}
-
-static void scr_welcome_key_event_handler(key_event_t event)
-{
-    if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
+    else
     {
-        lv_scr_load(guider_ui.scrModeSelect);
-        xSemaphoreGive(xGuiSemaphore);
-    }
-    current_screen = SCR_MODE_SELECT;
-}
-
-static void scr_mode_select_key_event_handler(key_event_t event)
-{
-    if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
-    {
-        lv_scr_load(guider_ui.scrPowerMeter);
-        xSemaphoreGive(xGuiSemaphore);
-    }
-    current_screen = SCR_POWER_METER;
-    ESP_ERROR_CHECK(start_ina226_service());
-}
-
-static void scr_power_meter_key_event_handler(key_event_t event)
-{
-    if (KEY_BACK_EVENT == event)
-    {
-        ESP_ERROR_CHECK(terminate_ina226_service());
-        if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
-        {
-            lv_scr_load(guider_ui.scrModeSelect);
-            xSemaphoreGive(xGuiSemaphore);
-        }
-        current_screen = SCR_MODE_SELECT;
+        data->state = LV_INDEV_STATE_RELEASED;
     }
 }
