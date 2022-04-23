@@ -34,39 +34,42 @@ static void key_read_cb(lv_indev_drv_t *indev_drv, lv_indev_data_t *data);
 
 esp_err_t dev_lvgl_init(void)
 {
+    // Create GUI mutex
     xGuiSemaphore = xSemaphoreCreateMutex();
-
+    // Init LVGL
     lv_init();
-
+    // Init LVGL display driver
     lv_disp_drv_init(&disp_drv);
+    // Resolution is needed by calculation of display buffer
     disp_drv.hor_res = 320;
     disp_drv.ver_res = 240;
-
+    // Init ESP DMA buffer & SPI & GPIO
     lvgl_interface_init(&disp_drv);
     lvgl_display_gpios_init();
-
+    // Malloc two display buffers with DMA capability
     size_t display_buffer_size = lvgl_get_display_buffer_size(&disp_drv);
     lv_color_t *buf1 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
     lv_color_t *buf2 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
-
+    // Init double diplay buffer mode
     static lv_disp_draw_buf_t disp_buf;
     lv_disp_draw_buf_init(&disp_buf, buf1, buf2, display_buffer_size);
-
+    // Assign display buffer & flush callback & update callback (rotation)
     disp_drv.draw_buf = &disp_buf;
     disp_drv.flush_cb = disp_driver_flush;
     disp_drv.drv_update_cb = st7789_update_cb;
-    lv_disp_drv_register(&disp_drv);
-    disp_driver_init(&disp_drv);
-
-    lv_disp_t *disp = lv_disp_get_default();
+    // Regist LVGL display driver
+    lv_disp_t *disp = lv_disp_drv_register(&disp_drv);
+    // Rotate diplay to right direction
     lv_disp_set_rotation(disp, LV_DISP_ROT_90);
-
-    /* Create and start a periodic timer interrupt to call lv_tick_inc */
+    // Init LCD controller
+    disp_driver_init(&disp_drv);
+    // Regist input device (keypad)
     static lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.type = LV_INDEV_TYPE_KEYPAD;
     indev_drv.read_cb = key_read_cb;
     indev_key = lv_indev_drv_register(&indev_drv);
+    // Create and start a periodic timer interrupt to call lv_tick_inc
     const esp_timer_create_args_t periodic_timer_args = {
         .callback = &lv_tick_task,
         .name = "lv_tick-task"};
@@ -75,12 +78,13 @@ esp_err_t dev_lvgl_init(void)
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
     ESP_LOGI(TAG, "lvgl init is done.");
-
+    // Init screens
     setup_scr_scrWelcome(&guider_ui);
     setup_scr_scrModeSelect(&guider_ui);
     setup_scr_scrWifi(&guider_ui);
     setup_scr_scrProg(&guider_ui);
     setup_scr_scrPowerMeter(&guider_ui);
+    // Load welcome screen
     lv_scr_load(guider_ui.scrWelcome);
     current_screen = SCR_WELCOME;
 
@@ -96,10 +100,9 @@ void app_lvgl(void *vParam)
             lv_task_handler();
             xSemaphoreGive(xGuiSemaphore);
         }
-
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-
+    // Never reach here
     vTaskDelete(NULL);
 }
 
