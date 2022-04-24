@@ -142,7 +142,7 @@ static void scrWelcome_event_cb(lv_event_t *e)
         {
             ESP_LOGI(TAG, "Switch to scrPowerMeter");
             lv_group_remove_all_objs(group_indev);
-            lv_scr_load(guider_ui.scrPowerMeter);
+            lv_scr_load_anim(guider_ui.scrPowerMeter, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, false);
             lv_group_add_obj(group_indev, guider_ui.scrPowerMeter);
             current_screen = SCR_POWER_METER;
             ESP_ERROR_CHECK(start_ina226_service());
@@ -161,7 +161,7 @@ static void scrPowerMeter_event_cb(lv_event_t *e)
             ESP_ERROR_CHECK(terminate_ina226_service());
             ESP_LOGI(TAG, "Switch to scrWelcome");
             lv_group_remove_all_objs(group_indev);
-            lv_scr_load(guider_ui.scrWelcome);
+            lv_scr_load_anim(guider_ui.scrWelcome, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, false);
             lv_group_add_obj(group_indev, guider_ui.scrWelcome);
             current_screen = SCR_WELCOME;
         }
