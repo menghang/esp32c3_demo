@@ -23,8 +23,8 @@ void setup_scr_scrModeSelect(lv_ui *ui){
 
 	//Write codes scrModeSelect_listMode
 	ui->scrModeSelect_listMode = lv_list_create(ui->scrModeSelect);
-	lv_obj_set_pos(ui->scrModeSelect_listMode, 20, 20);
-	lv_obj_set_size(ui->scrModeSelect_listMode, 200, 280);
+	lv_obj_set_pos(ui->scrModeSelect_listMode, 0, 0);
+	lv_obj_set_size(ui->scrModeSelect_listMode, 240, 320);
 
 	//Write style state: LV_STATE_DEFAULT for style_scrmodeselect_listmode_main_main_default
 	static lv_style_t style_scrmodeselect_listmode_main_main_default;
