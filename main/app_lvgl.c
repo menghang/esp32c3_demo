@@ -28,8 +28,12 @@ static lv_disp_drv_t disp_drv;
 static SemaphoreHandle_t xGuiSemaphore;
 static scr_t current_screen;
 static lv_indev_t *indev_key;
+static lv_group_t *group_indev;
 
 static void lv_tick_task(void *arg);
+static void lv_custom_event_init(lv_ui *ui);
+static void scrWelcome_event_cb(lv_event_t *e);
+static void scrPowerMeter_event_cb(lv_event_t *e);
 static void key_read_cb(lv_indev_drv_t *indev_drv, lv_indev_data_t *data);
 
 esp_err_t dev_lvgl_init(void)
@@ -69,6 +73,9 @@ esp_err_t dev_lvgl_init(void)
     indev_drv.type = LV_INDEV_TYPE_KEYPAD;
     indev_drv.read_cb = key_read_cb;
     indev_key = lv_indev_drv_register(&indev_drv);
+    // Create input group
+    group_indev = lv_group_create();
+    lv_indev_set_group(indev_key, group_indev);
     // Create and start a periodic timer interrupt to call lv_tick_inc
     const esp_timer_create_args_t periodic_timer_args = {
         .callback = &lv_tick_task,
@@ -84,8 +91,12 @@ esp_err_t dev_lvgl_init(void)
     setup_scr_scrWifi(&guider_ui);
     setup_scr_scrProg(&guider_ui);
     setup_scr_scrPowerMeter(&guider_ui);
+    // Add custom events
+    lv_custom_event_init(&guider_ui);
     // Load welcome screen
     lv_scr_load(guider_ui.scrWelcome);
+    // Add screen to input group
+    lv_group_add_obj(group_indev, guider_ui.scrWelcome);
     current_screen = SCR_WELCOME;
 
     return ESP_OK;
@@ -113,6 +124,48 @@ void app_lvgl(void *vParam)
 static void lv_tick_task(void *arg)
 {
     lv_tick_inc(LV_TICK_PERIOD_MS);
+}
+
+static void lv_custom_event_init(lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->scrWelcome, scrWelcome_event_cb, LV_EVENT_KEY, NULL);
+    lv_obj_add_event_cb(ui->scrPowerMeter, scrPowerMeter_event_cb, LV_EVENT_KEY, NULL);
+}
+
+static void scrWelcome_event_cb(lv_event_t *e)
+{
+    if (LV_EVENT_KEY == e->code)
+    {
+        uint32_t key_code = lv_indev_get_key(lv_indev_get_act());
+        ESP_LOGD(TAG, "scrWelcome_event_cb->key->0x%02X", key_code);
+        if (LV_KEY_ENTER == key_code)
+        {
+            ESP_LOGI(TAG, "Switch to scrPowerMeter");
+            lv_group_remove_all_objs(group_indev);
+            lv_scr_load(guider_ui.scrPowerMeter);
+            lv_group_add_obj(group_indev, guider_ui.scrPowerMeter);
+            current_screen = SCR_POWER_METER;
+            ESP_ERROR_CHECK(start_ina226_service());
+        }
+    }
+}
+
+static void scrPowerMeter_event_cb(lv_event_t *e)
+{
+    if (LV_EVENT_KEY == e->code)
+    {
+        uint32_t key_code = lv_indev_get_key(lv_indev_get_act());
+        ESP_LOGD(TAG, "scrPowerMeter_event_cb->key->0x%02X", key_code);
+        if (LV_KEY_ESC == key_code)
+        {
+            ESP_ERROR_CHECK(terminate_ina226_service());
+            ESP_LOGI(TAG, "Switch to scrWelcome");
+            lv_group_remove_all_objs(group_indev);
+            lv_scr_load(guider_ui.scrWelcome);
+            lv_group_add_obj(group_indev, guider_ui.scrWelcome);
+            current_screen = SCR_WELCOME;
+        }
+    }
 }
 
 void ui_power_meter_update(float vol, float cur, float pwr)
