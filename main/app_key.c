@@ -15,10 +15,10 @@ static const uint8_t gpio_num_enter = 20;
 static const uint8_t gpio_num_esc = 0;
 static const uint32_t button_beep_period = 50;
 
-static void button_left_press_right_cb(void *arg);
-static void button_right_press_right_cb(void *arg);
-static void button_enter_press_right_cb(void *arg);
-static void button_esc_press_right_cb(void *arg);
+static void button_left_press_down_cb(void *arg);
+static void button_right_press_down_cb(void *arg);
+static void button_enter_press_down_cb(void *arg);
+static void button_esc_press_down_cb(void *arg);
 
 esp_err_t dev_key_init(void)
 {
@@ -35,7 +35,7 @@ esp_err_t dev_key_init(void)
         ESP_LOGE(TAG, "Button LEFT create failed");
         return ESP_FAIL;
     }
-    iot_button_register_cb(btn_left_handler, BUTTON_PRESS_DOWN, button_left_press_right_cb);
+    iot_button_register_cb(btn_left_handler, BUTTON_PRESS_DOWN, button_left_press_down_cb);
 
     button_config_t btn_right_cfg = {
         .type = BUTTON_TYPE_GPIO,
@@ -50,7 +50,7 @@ esp_err_t dev_key_init(void)
         ESP_LOGE(TAG, "Button RIGHT create failed");
         return ESP_FAIL;
     }
-    iot_button_register_cb(btn_right_handler, BUTTON_PRESS_DOWN, button_right_press_right_cb);
+    iot_button_register_cb(btn_right_handler, BUTTON_PRESS_DOWN, button_right_press_down_cb);
 
     button_config_t btn_enter_cfg = {
         .type = BUTTON_TYPE_GPIO,
@@ -65,7 +65,7 @@ esp_err_t dev_key_init(void)
         ESP_LOGE(TAG, "Button ENTER create failed");
         return ESP_FAIL;
     }
-    iot_button_register_cb(btn_enter_handler, BUTTON_PRESS_DOWN, button_enter_press_right_cb);
+    iot_button_register_cb(btn_enter_handler, BUTTON_PRESS_DOWN, button_enter_press_down_cb);
 
     button_config_t btn_esc_cfg = {
         .type = BUTTON_TYPE_GPIO,
@@ -80,33 +80,33 @@ esp_err_t dev_key_init(void)
         ESP_LOGE(TAG, "Button ESC create failed");
         return ESP_FAIL;
     }
-    iot_button_register_cb(btn_esc_handler, BUTTON_PRESS_DOWN, button_esc_press_right_cb);
+    iot_button_register_cb(btn_esc_handler, BUTTON_PRESS_DOWN, button_esc_press_down_cb);
     ESP_LOGI(TAG, "Key init is done.");
     return ESP_OK;
 }
 
-static void button_left_press_right_cb(void *arg)
+static void button_left_press_down_cb(void *arg)
 {
     ESP_LOGD(TAG, "Key RIGHT press down.");
     buzzer_beep(&button_beep_period);
     key_event = LV_KEY_PREV;
 }
 
-static void button_right_press_right_cb(void *arg)
+static void button_right_press_down_cb(void *arg)
 {
     ESP_LOGD(TAG, "Key LEFT press down.");
     buzzer_beep(&button_beep_period);
     key_event = LV_KEY_NEXT;
 }
 
-static void button_enter_press_right_cb(void *arg)
+static void button_enter_press_down_cb(void *arg)
 {
     ESP_LOGD(TAG, "Key ENTER press down.");
     buzzer_beep(&button_beep_period);
     key_event = LV_KEY_ENTER;
 }
 
-static void button_esc_press_right_cb(void *arg)
+static void button_esc_press_down_cb(void *arg)
 {
     ESP_LOGD(TAG, "Key ESC press down.");
     buzzer_beep(&button_beep_period);
