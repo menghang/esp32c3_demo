@@ -61,14 +61,42 @@ void setup_scr_scrModeSelect(lv_ui *ui){
 	lv_style_set_bg_opa(&style_scrmodeselect_listmode_extra_btns_main_default, 255);
 	lv_style_set_text_color(&style_scrmodeselect_listmode_extra_btns_main_default, lv_color_make(0x00, 0x00, 0x00));
 	lv_style_set_text_font(&style_scrmodeselect_listmode_extra_btns_main_default, &lv_font_FiraCode_Retina_18);
+
+	//Write style state: LV_STATE_PRESSED for style_scrmodeselect_listmode_extra_btns_main_pressed
+	static lv_style_t style_scrmodeselect_listmode_extra_btns_main_pressed;
+	lv_style_reset(&style_scrmodeselect_listmode_extra_btns_main_pressed);
+	lv_style_set_radius(&style_scrmodeselect_listmode_extra_btns_main_pressed, 5);
+	lv_style_set_bg_color(&style_scrmodeselect_listmode_extra_btns_main_pressed, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_color(&style_scrmodeselect_listmode_extra_btns_main_pressed, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_dir(&style_scrmodeselect_listmode_extra_btns_main_pressed, LV_GRAD_DIR_VER);
+	lv_style_set_bg_opa(&style_scrmodeselect_listmode_extra_btns_main_pressed, 255);
+	lv_style_set_text_color(&style_scrmodeselect_listmode_extra_btns_main_pressed, lv_color_make(0x00, 0x00, 0x00));
+	lv_style_set_text_font(&style_scrmodeselect_listmode_extra_btns_main_pressed, &lv_font_FiraCode_Retina_18);
+
+	//Write style state: LV_STATE_FOCUSED for style_scrmodeselect_listmode_extra_btns_main_focused
+	static lv_style_t style_scrmodeselect_listmode_extra_btns_main_focused;
+	lv_style_reset(&style_scrmodeselect_listmode_extra_btns_main_focused);
+	lv_style_set_radius(&style_scrmodeselect_listmode_extra_btns_main_focused, 5);
+	lv_style_set_bg_color(&style_scrmodeselect_listmode_extra_btns_main_focused, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_color(&style_scrmodeselect_listmode_extra_btns_main_focused, lv_color_make(0xff, 0xff, 0xff));
+	lv_style_set_bg_grad_dir(&style_scrmodeselect_listmode_extra_btns_main_focused, LV_GRAD_DIR_VER);
+	lv_style_set_bg_opa(&style_scrmodeselect_listmode_extra_btns_main_focused, 255);
+	lv_style_set_text_color(&style_scrmodeselect_listmode_extra_btns_main_focused, lv_color_make(0x00, 0x00, 0x00));
+	lv_style_set_text_font(&style_scrmodeselect_listmode_extra_btns_main_focused, &lv_font_FiraCode_Retina_18);
 	lv_obj_t *scrModeSelect_listMode_btn;
 	scrModeSelect_listMode_btn = lv_list_add_btn(ui->scrModeSelect_listMode, LV_SYMBOL_SETTINGS, "WIFI");
 	ui->scrModeSelect_listMode_item0 = scrModeSelect_listMode_btn;
 	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_default, LV_PART_MAIN|LV_STATE_DEFAULT);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_pressed, LV_PART_MAIN|LV_STATE_PRESSED);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_focused, LV_PART_MAIN|LV_STATE_FOCUSED);
 	scrModeSelect_listMode_btn = lv_list_add_btn(ui->scrModeSelect_listMode, LV_SYMBOL_DOWNLOAD, "PROGRAMMER");
 	ui->scrModeSelect_listMode_item1 = scrModeSelect_listMode_btn;
 	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_default, LV_PART_MAIN|LV_STATE_DEFAULT);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_pressed, LV_PART_MAIN|LV_STATE_PRESSED);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_focused, LV_PART_MAIN|LV_STATE_FOCUSED);
 	scrModeSelect_listMode_btn = lv_list_add_btn(ui->scrModeSelect_listMode, LV_SYMBOL_CHARGE, "POWER METER");
 	ui->scrModeSelect_listMode_item2 = scrModeSelect_listMode_btn;
 	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_default, LV_PART_MAIN|LV_STATE_DEFAULT);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_pressed, LV_PART_MAIN|LV_STATE_PRESSED);
+	lv_obj_add_style(scrModeSelect_listMode_btn, &style_scrmodeselect_listmode_extra_btns_main_focused, LV_PART_MAIN|LV_STATE_FOCUSED);
 }

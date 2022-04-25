@@ -12,28 +12,23 @@
 static const char *TAG = "APP_LVGL";
 
 #define LV_TICK_PERIOD_MS 1
-typedef enum
-{
-    SCR_WELCOME,
-    SCR_MODE_SELECT,
-    SCR_WIFI,
-    SCR_PROG,
-    SCR_POWER_METER
-} scr_t;
 
 lv_ui guider_ui;
 lv_key_t key_event = 0;
 
 static lv_disp_drv_t disp_drv;
 static SemaphoreHandle_t xGuiSemaphore;
-static scr_t current_screen;
 static lv_indev_t *indev_key;
 static lv_group_t *group_indev;
 
 static void lv_tick_task(void *arg);
 static void lv_custom_event_init(lv_ui *ui);
 static void scrWelcome_event_cb(lv_event_t *e);
+static void scrModeSelect_listMode_event_cb(lv_event_t *e);
 static void scrPowerMeter_event_cb(lv_event_t *e);
+static void scr_load_welcome(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim);
+static void scr_load_mode_select(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim);
+static void scr_load_power_meter(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim);
 static void key_read_cb(lv_indev_drv_t *indev_drv, lv_indev_data_t *data);
 
 esp_err_t dev_lvgl_init(void)
@@ -54,8 +49,8 @@ esp_err_t dev_lvgl_init(void)
     size_t display_buffer_size = lvgl_get_display_buffer_size(&disp_drv);
     lv_color_t *buf1 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
     lv_color_t *buf2 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
-    assert(buf1!=NULL);
-    assert(buf2!=NULL);
+    assert(buf1 != NULL);
+    assert(buf2 != NULL);
     // Init double diplay buffer mode
     static lv_disp_draw_buf_t disp_buf;
     lv_disp_draw_buf_init(&disp_buf, buf1, buf2, display_buffer_size);
@@ -85,9 +80,9 @@ esp_err_t dev_lvgl_init(void)
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
-
     ESP_LOGI(TAG, "lvgl init is done.");
-    // Init screens
+    // Init theme & screens
+    lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_BLUE_GREY), 1, LV_FONT_DEFAULT);
     setup_scr_scrWelcome(&guider_ui);
     setup_scr_scrModeSelect(&guider_ui);
     setup_scr_scrWifi(&guider_ui);
@@ -99,7 +94,6 @@ esp_err_t dev_lvgl_init(void)
     lv_scr_load(guider_ui.scrWelcome);
     // Add screen to input group
     lv_group_add_obj(group_indev, guider_ui.scrWelcome);
-    current_screen = SCR_WELCOME;
 
     return ESP_OK;
 }
@@ -132,42 +126,86 @@ static void lv_custom_event_init(lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->scrWelcome, scrWelcome_event_cb, LV_EVENT_KEY, NULL);
     lv_obj_add_event_cb(ui->scrPowerMeter, scrPowerMeter_event_cb, LV_EVENT_KEY, NULL);
+    lv_obj_add_event_cb(ui->scrModeSelect_listMode_item0, scrModeSelect_listMode_event_cb, LV_EVENT_KEY, NULL);
+    lv_obj_add_event_cb(ui->scrModeSelect_listMode_item1, scrModeSelect_listMode_event_cb, LV_EVENT_KEY, NULL);
+    lv_obj_add_event_cb(ui->scrModeSelect_listMode_item2, scrModeSelect_listMode_event_cb, LV_EVENT_KEY, NULL);
 }
 
 static void scrWelcome_event_cb(lv_event_t *e)
 {
-    if (LV_EVENT_KEY == e->code)
+    if (LV_EVENT_KEY == lv_event_get_code(e))
     {
         uint32_t key_code = lv_indev_get_key(lv_indev_get_act());
-        ESP_LOGD(TAG, "scrWelcome_event_cb->key->0x%02X", key_code);
         if (LV_KEY_ENTER == key_code)
         {
-            ESP_LOGI(TAG, "Switch to scrPowerMeter");
-            lv_group_remove_all_objs(group_indev);
-            lv_scr_load_anim(guider_ui.scrPowerMeter, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, false);
-            lv_group_add_obj(group_indev, guider_ui.scrPowerMeter);
-            current_screen = SCR_POWER_METER;
-            ESP_ERROR_CHECK(start_ina226_service());
+            ESP_LOGI(TAG, "scrWelcome -> scrModeSelect");
+            scr_load_mode_select(&guider_ui, group_indev, LV_SCR_LOAD_ANIM_MOVE_LEFT);
+        }
+    }
+}
+
+static void scrModeSelect_listMode_event_cb(lv_event_t *e)
+{
+    if (LV_EVENT_KEY == lv_event_get_code(e))
+    {
+        uint32_t key_code = lv_indev_get_key(lv_indev_get_act());
+        if (LV_KEY_ENTER == key_code)
+        {
+            lv_obj_t *obj = lv_event_get_target(e);
+            if (guider_ui.scrModeSelect_listMode_item2 == obj)
+            {
+                ESP_LOGI(TAG, "scrModeSelect -> scrPowerMeter");
+                scr_load_power_meter(&guider_ui, group_indev, LV_SCR_LOAD_ANIM_MOVE_LEFT);
+            }
+        }
+        else if (LV_KEY_ESC == key_code)
+        {
+            ESP_LOGI(TAG, "scrModeSelect -> scrWelcome");
+            scr_load_welcome(&guider_ui, group_indev, LV_SCR_LOAD_ANIM_MOVE_RIGHT);
         }
     }
 }
 
 static void scrPowerMeter_event_cb(lv_event_t *e)
 {
-    if (LV_EVENT_KEY == e->code)
+    if (LV_EVENT_KEY == lv_event_get_code(e))
     {
         uint32_t key_code = lv_indev_get_key(lv_indev_get_act());
-        ESP_LOGD(TAG, "scrPowerMeter_event_cb->key->0x%02X", key_code);
         if (LV_KEY_ESC == key_code)
         {
             ESP_ERROR_CHECK(terminate_ina226_service());
-            ESP_LOGI(TAG, "Switch to scrWelcome");
-            lv_group_remove_all_objs(group_indev);
-            lv_scr_load_anim(guider_ui.scrWelcome, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, false);
-            lv_group_add_obj(group_indev, guider_ui.scrWelcome);
-            current_screen = SCR_WELCOME;
+            ESP_LOGI(TAG, "scrPowerMeter -> scrModeSelect");
+            scr_load_mode_select(&guider_ui, group_indev, LV_SCR_LOAD_ANIM_MOVE_RIGHT);
         }
     }
+}
+
+static void scr_load_welcome(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim)
+{
+    lv_group_remove_all_objs(group);
+    lv_scr_load_anim(ui->scrWelcome, anim, 250, 0, false);
+    lv_group_add_obj(group, ui->scrWelcome);
+}
+
+static void scr_load_mode_select(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim)
+{
+    lv_group_remove_all_objs(group);
+    lv_scr_load_anim(ui->scrModeSelect, anim, 250, 0, false);
+    lv_group_add_obj(group, ui->scrModeSelect_listMode_item0);
+    lv_group_add_obj(group, ui->scrModeSelect_listMode_item1);
+    lv_group_add_obj(group, ui->scrModeSelect_listMode_item2);
+    lv_obj_clear_state(ui->scrModeSelect_listMode_item0, LV_STATE_ANY);
+    lv_obj_clear_state(ui->scrModeSelect_listMode_item1, LV_STATE_ANY);
+    lv_obj_clear_state(ui->scrModeSelect_listMode_item2, LV_STATE_ANY);
+    lv_obj_add_state(ui->scrModeSelect_listMode_item0, LV_STATE_FOCUS_KEY);
+}
+
+static void scr_load_power_meter(lv_ui *ui, lv_group_t *group, lv_scr_load_anim_t anim)
+{
+    lv_group_remove_all_objs(group);
+    lv_scr_load_anim(ui->scrPowerMeter, anim, 250, 0, false);
+    lv_group_add_obj(group, ui->scrPowerMeter);
+    ESP_ERROR_CHECK(start_ina226_service());
 }
 
 void ui_power_meter_update(float vol, float cur, float pwr)
