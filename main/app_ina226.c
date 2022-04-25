@@ -88,7 +88,7 @@ static void app_ina226(void *pvParam)
             cur = calc_avg_val(buf_cur, MEAS_BUF_SIZE);
             pwr = calc_avg_val(buf_pwr, MEAS_BUF_SIZE);
 
-            vTaskDelay(pdMS_TO_TICKS(100));
+            vTaskDelay(pdMS_TO_TICKS(50));
         }
         ESP_LOGD(TAG, "VBUS: %.02fmV, IBUS: %.02fmA, PBUS: %.04fW",
                  vol, cur, pwr);
