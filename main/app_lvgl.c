@@ -54,6 +54,8 @@ esp_err_t dev_lvgl_init(void)
     size_t display_buffer_size = lvgl_get_display_buffer_size(&disp_drv);
     lv_color_t *buf1 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
     lv_color_t *buf2 = heap_caps_malloc(display_buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
+    assert(buf1!=NULL);
+    assert(buf2!=NULL);
     // Init double diplay buffer mode
     static lv_disp_draw_buf_t disp_buf;
     lv_disp_draw_buf_init(&disp_buf, buf1, buf2, display_buffer_size);
