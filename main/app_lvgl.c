@@ -212,31 +212,16 @@ void ui_power_meter_update(float vol, float cur, float pwr)
 {
     static char str_vol[16], str_cur[16], str_pwr[16];
 
-    if (vol >= 9.99995)
-    {
-        sprintf(str_vol, "%2.3f", vol);
-    }
-    else
-    {
-        sprintf(str_vol, "%1.4f", vol);
-    }
+    sprintf(str_vol, "%.4f", vol);
+    str_vol[6] = '\0';
     if (cur < 0)
     {
         cur = 0 - cur;
     }
-    sprintf(str_cur, "%1.4f", cur);
-    if (pwr >= 99.9995)
-    {
-        sprintf(str_pwr, "%3.2f", pwr);
-    }
-    else if (pwr >= 9.99995)
-    {
-        sprintf(str_pwr, "%2.3f", pwr);
-    }
-    else
-    {
-        sprintf(str_pwr, "%1.4f", pwr);
-    }
+    sprintf(str_cur, "%.4f", cur);
+    str_cur[6] = '\0';
+    sprintf(str_pwr, "%.4f", pwr);
+    str_pwr[6] = '\0';
     if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY))
     {
         lv_label_set_text(guider_ui.scrPowerMeter_labelVolVal, str_vol);
